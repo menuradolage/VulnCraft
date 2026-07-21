@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Search</title>
+    </head>
+    <body>
+        <h2>Search</h2>
+        <form method="GET" action="/search">
+            <input type="text" name="q" placeholder="Enter search term">
+            <input type="submit" value="Search">
+        </form>
+        {% if result %}
+            <h3>You searched for:</h3>
+            <p>{{ result }}</p>
+        {% endif %}
+    </body>
+</html>
