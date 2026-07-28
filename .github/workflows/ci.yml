@@ -17,7 +17,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.9'
+          python-version: '3.11'
 
       - name: Install dependencies
         run: pip install -r requirements.txt
@@ -58,7 +58,7 @@ jobs:
         run: |
           pip install pip-audit
           pip-audit -r requirements.txt --strict
-          
+
   secrets-scan:
     needs: build-and-test
     runs-on: ubuntu-latest
