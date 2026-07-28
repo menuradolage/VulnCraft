@@ -67,9 +67,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0   # Gitleaks needs full git history
+          fetch-depth: 0
 
       - name: Run Gitleaks
-        uses: gitleaks/gitleaks-action@v2
-        with:
-          args: '--verbose --redact'
+        run: |
+          docker run --rm -v $(pwd):/repo zricethezav/gitleaks \
+            detect --source=/repo --verbose --redact --no-git
