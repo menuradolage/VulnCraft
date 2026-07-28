@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template_string
 import sqlite3
-import config
+#import config
 
 app = Flask(__name__)
 
@@ -38,8 +38,9 @@ def login():
         #VULNERABLE QUERY - DO NOT USE IN REAL LIFE
         conn = sqlite3.connect('users.db')
         c = conn.cursor()
-        query = f"SELECT * FROM users WHERE username = '{username}' AND password = '{password}'"
-        c.execute(query)
+        #query = f"SELECT * FROM users WHERE username = '{username}' AND password = '{password}'"
+        #c.execute(query)
+        c.execute("SELECT * FROM users WHERE username = ? AND password = ?", (username, password))   
         user = c.fetchone()
         conn.close()
 
@@ -55,22 +56,24 @@ def login():
 @app.route('/search')
 def search():
     query = request.args.get('q', '') # get the search term from URL ?q=...
-
+    return render_template_string(
+        open('templates/search.html').read(),
+        result=query
+    )   
     #VULNERABLE: directly injecting user input into the HTML before Jinja2 escapes it
-    with open('templates/search.html', 'r') as f:
-        template_content = f.read()
+    #with open('templates/search.html', 'r') as f:
+        #template_content = f.read()
     # Replace a placeholder we add to the template with the raw query
     # We'll modify the template slightly t have a placeholder: {{QUERY}}
     # But we'll just do a simple replace of '{{ result }}' with the query.
     # This means the query will be raw HTML, because it's inserted BEFORE
     # render_template_string evaluates Jinja2.
-    vulnerable_html = template_content.replace('{{ result }}', query)
+    #vulnerable_html = template_content.replace('{{ result }}', query)
 
     # Now we render the already-manipulated string.
     # Because the user input is already baked into the HTML, any script tags
     # Will execute in the browser.
-    return render_template_string(vulnerable_html, result=True)
-
+    #return render_template_string(vulnerable_html, result=True)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
