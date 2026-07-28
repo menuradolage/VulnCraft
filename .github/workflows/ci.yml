@@ -37,3 +37,24 @@ jobs:
         uses: semgrep/semgrep-action@v1
         with:
           config: p/security-audit   # a ruleset full of security checks for Python
+
+  dependency-scan:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run pip-audit
+        run: |
+          pip install pip-audit
+          pip-audit --strict
