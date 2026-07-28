@@ -1,5 +1,5 @@
 # Database configuration
 DB_HOST = "localhost"
 DB_USER = "admin"
-DB_PASSWORD = "SuperSecretPassword123!" # <- this is the hard-codeed secret
+password = "SuperSecretPassword123!"
 DB_NAME = "users.db"
