@@ -57,8 +57,8 @@ jobs:
       - name: Run pip-audit
         run: |
           pip install pip-audit
-          pip-audit --strict
-
+          pip-audit -r requirements.txt --strict
+          
   secrets-scan:
     needs: build-and-test
     runs-on: ubuntu-latest
